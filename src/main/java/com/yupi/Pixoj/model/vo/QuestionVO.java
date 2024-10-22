@@ -13,10 +13,8 @@ import java.util.List;
 
 /**
  * 题目封装类
- *
  * @TableName question
  */
-
 @Data
 public class QuestionVO implements Serializable {
     /**
@@ -39,7 +37,6 @@ public class QuestionVO implements Serializable {
      */
     private List<String> tags;
 
-
     /**
      * 题目提交数
      */
@@ -48,7 +45,7 @@ public class QuestionVO implements Serializable {
     /**
      * 题目通过数
      */
-    private Integer acceptedNum;
+    private Integer acceptNum;
 
     /**
      * 判题配置（json对象）
@@ -66,7 +63,7 @@ public class QuestionVO implements Serializable {
     private Integer favourNum;
 
     /**
-     * 创建用户
+     * 创建用户id
      */
     private Long userId;
 
@@ -79,6 +76,7 @@ public class QuestionVO implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+
     /**
      * 创建题目人的信息
      */
@@ -104,7 +102,6 @@ public class QuestionVO implements Serializable {
         if (voJudgeConfig != null) {
             question.setJudgeConfig(JSONUtil.toJsonStr(voJudgeConfig));
         }
-
         return question;
     }
 
@@ -126,7 +123,6 @@ public class QuestionVO implements Serializable {
         questionVO.setJudgeConfig(JSONUtil.toBean(judgeConfigStr, JudgeConfig.class));
         return questionVO;
     }
-
 
     private static final long serialVersionUID = 1L;
 }
