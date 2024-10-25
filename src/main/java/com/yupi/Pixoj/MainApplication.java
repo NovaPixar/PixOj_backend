@@ -10,8 +10,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 /**
  * 主类（项目启动入口）
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author <a href="https://github.com/NovaPixar">NovaPixar</a>
+ * @from <a href="https://space.bilibili.com/32191370?spm_id_from=333.1007.0.0">神坛跌向宫崎骏</a>
  */
 // todo 如需开启 Redis，须移除 exclude 中的内容
 @SpringBootApplication(exclude = {RedisAutoConfiguration.class})

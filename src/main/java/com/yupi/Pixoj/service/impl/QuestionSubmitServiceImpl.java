@@ -6,11 +6,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yupi.Pixoj.common.ErrorCode;
 import com.yupi.Pixoj.constant.CommonConstant;
 import com.yupi.Pixoj.exception.BusinessException;
-import com.yupi.Pixoj.model.dto.questionsubmit.JudgeInfo;
+import com.yupi.Pixoj.judge.JudgeService;
+import com.yupi.Pixoj.mapper.QuestionSubmitMapper;
 import com.yupi.Pixoj.model.dto.questionsubmit.QuestionSubmitAddRequest;
 import com.yupi.Pixoj.model.dto.questionsubmit.QuestionSubmitQueryRequest;
 import com.yupi.Pixoj.model.entity.Question;
-import com.yupi.Pixoj.model.entity.QuestionSubmit;
 import com.yupi.Pixoj.model.entity.QuestionSubmit;
 import com.yupi.Pixoj.model.entity.User;
 import com.yupi.Pixoj.model.enums.QuestionSubmitLanguageEnum;
@@ -18,19 +18,17 @@ import com.yupi.Pixoj.model.enums.QuestionSubmitStatusEnum;
 import com.yupi.Pixoj.model.vo.QuestionSubmitVO;
 import com.yupi.Pixoj.service.QuestionService;
 import com.yupi.Pixoj.service.QuestionSubmitService;
-import com.yupi.Pixoj.service.QuestionSubmitService;
-import com.yupi.Pixoj.mapper.QuestionSubmitMapper;
 import com.yupi.Pixoj.service.UserService;
 import com.yupi.Pixoj.utils.SqlUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.aop.framework.AopContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -47,6 +45,10 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
 
     @Resource
     private UserService userService;
+
+    @Resource
+    @Lazy
+    private JudgeService judgeService;
 
     /**
      * 题目提交
@@ -81,10 +83,15 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         questionSubmit.setStatus(QuestionSubmitStatusEnum.WAITING.getValue());
         questionSubmit.setJudgeInfo("{}");
         boolean save = this.save(questionSubmit);
-        if (!save) {
+        if (!save){
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "数据插入失败");
         }
-        return questionSubmit.getId();
+        Long questionSubmitId = questionSubmit.getId();
+        // 执行判题服务
+        CompletableFuture.runAsync(() -> {
+            judgeService.doJudge(questionSubmitId);
+        });
+        return questionSubmitId;
     }
 
 

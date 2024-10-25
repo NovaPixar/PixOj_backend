@@ -1,4 +1,4 @@
-package com.yupi.Pixoj.model.dto.questionsubmit;
+package com.yupi.Pixoj.judge.codesandbox.model;
 
 import lombok.Data;
 

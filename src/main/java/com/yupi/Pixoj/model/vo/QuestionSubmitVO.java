@@ -1,7 +1,7 @@
 package com.yupi.Pixoj.model.vo;
 
 import cn.hutool.json.JSONUtil;
-import com.yupi.Pixoj.model.dto.questionsubmit.JudgeInfo;
+import com.yupi.Pixoj.judge.codesandbox.model.JudgeInfo;
 import com.yupi.Pixoj.model.entity.QuestionSubmit;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
