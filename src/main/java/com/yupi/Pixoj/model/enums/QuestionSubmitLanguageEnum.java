@@ -19,7 +19,9 @@ public enum QuestionSubmitLanguageEnum {
 
     GOLANG("go", "go"),
 
-    PYTHON("python","python");
+    PYTHON("python","python"),
+
+    HTML("html","html");
 
     private final String text;
 
