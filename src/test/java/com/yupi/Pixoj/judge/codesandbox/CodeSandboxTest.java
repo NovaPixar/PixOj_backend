@@ -1,6 +1,5 @@
 package com.yupi.Pixoj.judge.codesandbox;
 
-import com.yupi.Pixoj.judge.codesandbox.impl.ExampleCodeSandbox;
 import com.yupi.Pixoj.judge.codesandbox.impl.RemoteCodeSandbox;
 import com.yupi.Pixoj.judge.codesandbox.model.ExecuteCodeRequest;
 import com.yupi.Pixoj.judge.codesandbox.model.ExecuteCodeResponse;
@@ -22,9 +21,9 @@ class CodeSandboxTest {
     @Test
     void executeCode() {
         CodeSandbox codeSandbox = new RemoteCodeSandbox();
-        String code = "int main() {}";
+        String code = "int main() { }";
         String language = QuestionSubmitLanguageEnum.JAVA.getValue();
-        List<String> inputList = Arrays.asList("1,2", "3,4");
+        List<String> inputList = Arrays.asList("1 2", "3 4");
         ExecuteCodeRequest executeCodeRequest = ExecuteCodeRequest.builder()
                 .code(code)
                 .language(language)
@@ -39,7 +38,7 @@ class CodeSandboxTest {
         CodeSandbox codeSandbox = CodeSandboxFactory.newInstance(type);
         String code = "int main() {}";
         String language = QuestionSubmitLanguageEnum.JAVA.getValue();
-        List<String> inputList = Arrays.asList("1,2", "3,4");
+        List<String> inputList = Arrays.asList("1 2", "3 4");
         ExecuteCodeRequest executeCodeRequest = ExecuteCodeRequest.builder()
                 .code(code)
                 .language(language)
@@ -53,9 +52,15 @@ class CodeSandboxTest {
     void executeCodeByProxy() {
         CodeSandbox codeSandbox = CodeSandboxFactory.newInstance(type);
         codeSandbox = new CodeSandboxProxy(codeSandbox);
-        String code = "int main() {}";
+        String code = "public class Main {\n" +
+                "    public static void main(String[] args) {\n" +
+                "        int a = Integer.parseInt(args[0]);\n" +
+                "        int b = Integer.parseInt(args[1]);\n" +
+                "        System.out.println(\"结果:\"+(a+b));\n" +
+                "    }\n" +
+                "}";
         String language = QuestionSubmitLanguageEnum.JAVA.getValue();
-        List<String> inputList = Arrays.asList("1,2", "3,4");
+        List<String> inputList = Arrays.asList("1 2", "3 4");
         ExecuteCodeRequest executeCodeRequest = ExecuteCodeRequest.builder()
                 .code(code)
                 .language(language)
